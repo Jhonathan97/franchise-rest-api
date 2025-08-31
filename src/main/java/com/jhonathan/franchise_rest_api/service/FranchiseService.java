@@ -8,5 +8,5 @@ public interface FranchiseService {
 
     Franchise create(String name);
 
-    Optional<Franchise> rename(Long id, String newName);
+    Franchise rename(Long id, String newName);
 }

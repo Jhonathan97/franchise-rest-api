@@ -8,5 +8,5 @@ public interface BranchService {
 
     Branch add(Long franchiseId, String name);
 
-    Optional<Branch> rename (Long franchiseId, Long branchId, String newName);
+    Branch rename (Long franchiseId, Long branchId, String newName);
 }
