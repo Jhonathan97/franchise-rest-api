@@ -6,8 +6,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class FranchiseRestApiApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(FranchiseRestApiApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(FranchiseRestApiApplication.class, args);
+    }
 
 }
