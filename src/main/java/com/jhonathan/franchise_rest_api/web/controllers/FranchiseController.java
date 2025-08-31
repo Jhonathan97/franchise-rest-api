@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/v1/francises")
+@RequestMapping("/api/v1/franchises")
 @Validated
 public class FranchiseController {
     private final FranchiseService franchiseService;

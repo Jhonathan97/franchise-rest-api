@@ -6,10 +6,12 @@ import com.jhonathan.franchise_rest_api.repository.BranchRepository;
 import com.jhonathan.franchise_rest_api.repository.FranchiseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Service
 public class BranchServiceImpl implements BranchService {
 
     private final BranchRepository branchRepository;
