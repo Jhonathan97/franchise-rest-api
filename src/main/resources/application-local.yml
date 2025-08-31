@@ -1,0 +1,18 @@
+spring:
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3307/franchises?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+    username: franchise
+    password: franchise
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQL8Dialect
+    open-in-view: false
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+
+springdoc:
+  api-docs.enabled: true
+  swagger-ui.enabled: true
