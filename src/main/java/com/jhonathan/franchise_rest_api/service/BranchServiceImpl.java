@@ -27,9 +27,9 @@ public class BranchServiceImpl implements BranchService {
                 .orElseThrow(() -> new EntityNotFoundException(
                         "Franchise %d not found".formatted(franchiseId)));
         String normalized = name == null ? null : name.trim();
-        if (branchRepository.existsByFranchiseIdAndNameIgnoreCase(franchiseId, normalized)) {
+        if (branchRepository.existsByFranchiseIdAndNameIgnoreCase(franchiseId, normalized))
             throw new IllegalArgumentException("Branch name already exists in this franchise");
-        }
+
         Branch b = new Branch();
         b.setFranchise(franchise);
         b.setName(normalized);
@@ -46,17 +46,20 @@ public class BranchServiceImpl implements BranchService {
         Branch b = branchRepository.findById(branchId)
                 .orElseThrow(() -> new EntityNotFoundException("Branch %d not found".formatted(branchId)));
 
-        if (!b.getFranchise().getId().equals(franchiseId)) {
+        if (!b.getFranchise().getId().equals(franchiseId))
             throw new IllegalArgumentException("Branch not in franchise");
-        }
+
         String normalized = newName == null ? null : newName.trim();
+
+        if (normalized == null || normalized.isBlank())
+            throw new IllegalArgumentException("Branch name cannot be empty");
 
         boolean nameTaken = branchRepository.existsByFranchiseIdAndNameIgnoreCase(franchiseId, normalized);
         boolean changingToSame = b.getName().equalsIgnoreCase(normalized);
 
-        if (nameTaken && !changingToSame) {
+        if (nameTaken && !changingToSame)
             throw new IllegalArgumentException("Branch name already exists in this franchise");
-        }
+
         b.setName(normalized);
         try {
             return branchRepository.save(b);

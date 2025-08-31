@@ -22,9 +22,12 @@ public class FranchiseServiceImpl implements FranchiseService {
     @Override
     public Franchise create(String name) {
         String normalized = name == null ? null : name.trim();
-        if (repository.existsByNameIgnoreCase(normalized)) {
+        if (normalized == null || normalized.isBlank())
+            throw new IllegalArgumentException("Franchise name cannot be empty");
+
+        if (repository.existsByNameIgnoreCase(normalized))
             throw new IllegalArgumentException("Franchise name already exists");
-        }
+
         Franchise f = new Franchise();
         f.setName(normalized);
         try {
@@ -42,10 +45,12 @@ public class FranchiseServiceImpl implements FranchiseService {
                         "Franchise %d not found".formatted(id)));
         String normalized = newName == null ? null : newName.trim();
 
+        if (normalized == null || normalized.isBlank())
+            throw new IllegalArgumentException("Franchise name cannot be empty");
+
         if (repository.existsByNameIgnoreCase(normalized)
-                && !f.getName().equalsIgnoreCase(normalized)) {
+                && !f.getName().equalsIgnoreCase(normalized))
             throw new IllegalArgumentException("Franchise name already exists");
-        }
         f.setName(normalized);
         try {
             return repository.save(f);
