@@ -31,3 +31,17 @@ build/
 
 ### VS Code ###
 .vscode/
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml
+
+#Terraform
+.iac/
+*.iac/
+.iac/terraform/variables.tf
+iac/terraform/.terraform/
+iac/terraform/.terraform.lock.hcl
+iac/terraform/terraform.tfstate
+iac/terraform/terraform.tfstate.backup
