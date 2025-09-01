@@ -1,6 +1,9 @@
 package com.jhonathan.franchise_rest_api.repository;
 
+import com.jhonathan.franchise_rest_api.domain.Branch;
 import com.jhonathan.franchise_rest_api.domain.Product;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -10,7 +13,7 @@ import java.util.Optional;
 
 public interface ProductRepository extends JpaRepository<Product, Long> {
     boolean existsByBranchIdAndNameIgnoreCase(Long branchId, String name);
-
+    Page<Product> findByBranchId(Long branchId, Pageable pageable);
     @Query(value = """
         SELECT branch_id   AS branchId,
                branchName  AS branchName,

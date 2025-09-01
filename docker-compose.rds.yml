@@ -1,0 +1,12 @@
+version: "3.9"
+services:
+  app:
+    build: .
+    image: franquicias-api:latest
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATASOURCE_URL: jdbc:mysql://franchises.cc3ageyeowas.us-east-1.rds.amazonaws.com:3306/franchises?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      SPRING_DATASOURCE_USERNAME: franchise
+      SPRING_DATASOURCE_PASSWORD: franchise
+    ports:
+      - "8080:8080"

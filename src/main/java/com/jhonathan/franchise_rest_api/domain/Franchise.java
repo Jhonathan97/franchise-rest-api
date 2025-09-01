@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Getter
 @Setter
@@ -18,4 +21,16 @@ public class Franchise {
 
     @Column(nullable = false,unique = true,length = 120)
     private String name;
+
+    @OneToMany(mappedBy = "franchise", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Branch> branches = new ArrayList<>();
+
+    public void addBranch(Branch b) {
+        branches.add(b);
+        b.setFranchise(this);
+    }
+    public void removeBranch(Branch b) {
+        branches.remove(b);
+        b.setFranchise(null);
+    }
 }

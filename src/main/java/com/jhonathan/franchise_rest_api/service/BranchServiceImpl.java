@@ -6,10 +6,14 @@ import com.jhonathan.franchise_rest_api.repository.BranchRepository;
 import com.jhonathan.franchise_rest_api.repository.FranchiseRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
+@Service
 public class BranchServiceImpl implements BranchService {
 
     private final BranchRepository branchRepository;
@@ -66,5 +70,15 @@ public class BranchServiceImpl implements BranchService {
         } catch (DataIntegrityViolationException e) {
             throw new IllegalArgumentException("Branch name already exists in this franchise", e);
         }
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public Page<Branch> listByFranchise(Long franchiseId, Pageable pageable) {
+
+        Franchise franchise = franchiseRepository.findById(franchiseId)
+                .orElseThrow(() -> new EntityNotFoundException(
+                        "Franchise %d not found".formatted(franchiseId)));
+        return branchRepository.findByFranchiseId(franchiseId, pageable);
     }
 }
