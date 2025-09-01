@@ -7,6 +7,8 @@ import com.jhonathan.franchise_rest_api.repository.ProductRepository;
 import com.jhonathan.franchise_rest_api.repository.ProductTopRow;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -58,7 +60,7 @@ public class ProductServiceImpl implements ProductService {
         Product p = productRepository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product %d not found".formatted(productId)));
 
-        if (!p.getBranch().getId().equals(branchId) ||  !p.getBranch().getFranchise().getId().equals(franchiseId))
+        if (!p.getBranch().getId().equals(branchId) || !p.getBranch().getFranchise().getId().equals(franchiseId))
             throw new IllegalArgumentException("Product not in given branch/franchise");
 
         productRepository.delete(p);
@@ -84,5 +86,35 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public List<ProductTopRow> topProductsPerBranch(Long franchiseId) {
         return productRepository.findTopProductsPerBranch(franchiseId);
+    }
+
+    @Override
+    public Product rename(Long franchiseId, Long branchId, Long productId, String newName) {
+        Product p = productRepository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product %d not found".formatted(productId)));
+
+        if (!p.getBranch().getId().equals(branchId) || !p.getBranch().getFranchise().getId().equals(franchiseId))
+            throw new IllegalArgumentException("Product not in given branch/franchise");
+
+        String normalized = newName == null ? null : newName.trim();
+        if (normalized == null || normalized.isBlank())
+            throw new IllegalArgumentException("Product name cannot be empty");
+
+        p.setName(normalized);
+        try {
+            return productRepository.save(p);
+        } catch (DataIntegrityViolationException e) {
+            throw new IllegalArgumentException("Product name already exists", e);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<Product> listByBranch(Long franchiseId, Long branchId, Pageable pageable) {
+        Branch b = branchRepository.findById(branchId)
+                .orElseThrow(() -> new EntityNotFoundException("Branch %d not found".formatted(branchId)));
+        if (!b.getFranchise().getId().equals(franchiseId)) {
+            throw new IllegalArgumentException("Branch not in franchise");
+        }
+        return productRepository.findByBranchId(branchId, pageable);
     }
 }
