@@ -39,8 +39,6 @@ build/
 
 #Terraform
 .iac/
-*.iac/
-.iac/terraform/variables.tf
 iac/terraform/.terraform/
 iac/terraform/.terraform.lock.hcl
 iac/terraform/terraform.tfstate
